@@ -230,6 +230,10 @@ class ImagePickerFragment : Fragment() {
         presenter.onDoneSelectImages(recyclerViewManager.selectedImages, config)
     }
 
+    fun onSelectAll() {
+        recyclerViewManager.selectAllImages()
+    }
+
     /**
      * Config recyclerView when configuration changed
      */
@@ -339,6 +343,9 @@ class ImagePickerFragment : Fragment() {
 
     val isShowDoneButton: Boolean
         get() = recyclerViewManager.isShowDoneButton
+
+    val isShowSelectAll: Boolean
+        get() = recyclerViewManager.isShowSelectAllButton
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

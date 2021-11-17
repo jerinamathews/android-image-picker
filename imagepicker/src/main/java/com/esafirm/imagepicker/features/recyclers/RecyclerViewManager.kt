@@ -41,6 +41,8 @@ class RecyclerViewManager(
     private var imageColumns = 0
     private var folderColumns = 0
 
+    private var isImagePickerDisplaying = false
+
     init {
         changeOrientation(orientation)
     }
@@ -113,6 +115,7 @@ class RecyclerViewManager(
         if (config.isFolderMode && !isDisplayingFolderView) {
             setFolderAdapter(null)
             imageAdapter.setData(emptyList())
+            isImagePickerDisplaying=false
             return true
         }
         return false
@@ -149,6 +152,12 @@ class RecyclerViewManager(
         imageAdapter.setData(images)
         setItemDecoration(imageColumns)
         recyclerView.adapter = imageAdapter
+        isImagePickerDisplaying=true
+
+    }
+
+    fun selectAllImages(){
+        imageAdapter.selectAllImages();
     }
 
     fun setFolderAdapter(folders: List<Folder>?) {
@@ -196,9 +205,13 @@ class RecyclerViewManager(
         return true
     }
 
+
     val isShowDoneButton: Boolean
         get() = (!isDisplayingFolderView
             && (imageAdapter.selectedImages.isNotEmpty() || config.showDoneButtonAlways)
             && config.returnMode !== ReturnMode.ALL && config.returnMode !== ReturnMode.GALLERY_ONLY)
+
+    val isShowSelectAllButton: Boolean
+        get() = isImagePickerDisplaying
 
 }

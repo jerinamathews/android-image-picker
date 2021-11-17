@@ -132,6 +132,21 @@ class ImagePickerAdapter(
         }
     }
 
+    fun selectAllImages(){
+        if(selectedImages.size >= listDiffer.currentList.size){
+            mutateSelection {
+                selectedImages.clear()
+                notifyDataSetChanged()
+            }
+        }else {
+            mutateSelection {
+                selectedImages.clear()
+                selectedImages.addAll(listDiffer.currentList)
+                notifyDataSetChanged()
+            }
+        }
+    }
+
     private fun mutateSelection(runnable: Runnable) {
         runnable.run()
         imageSelectedListener?.invoke(selectedImages)

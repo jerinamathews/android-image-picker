@@ -93,6 +93,9 @@ class CustomUIActivity : AppCompatActivity() {
                 menuCamera.isVisible = config!!.isShowCamera
             }
         }
+        val selectAll = menu.findItem(com.esafirm.imagepicker.R.id.select_all_images)
+        selectAll.isVisible = imagePickerFragment.isShowSelectAll
+
         val menuDone = menu.findItem(com.esafirm.imagepicker.R.id.menu_done)
         if (menuDone != null) {
             menuDone.title = ConfigUtils.getDoneButtonText(this, config!!)

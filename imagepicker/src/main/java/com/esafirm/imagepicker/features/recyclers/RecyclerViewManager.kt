@@ -12,7 +12,6 @@ import com.esafirm.imagepicker.adapter.ImagePickerAdapter
 import com.esafirm.imagepicker.features.ImagePickerComponentsHolder
 import com.esafirm.imagepicker.features.ImagePickerConfig
 import com.esafirm.imagepicker.features.ImagePickerMode
-import com.esafirm.imagepicker.features.IpCons
 import com.esafirm.imagepicker.features.ReturnMode
 import com.esafirm.imagepicker.helper.ConfigUtils
 import com.esafirm.imagepicker.listeners.OnFolderClickListener
@@ -25,7 +24,8 @@ import com.esafirm.imagepicker.view.GridSpacingItemDecoration
 class RecyclerViewManager(
     private val recyclerView: RecyclerView,
     private val config: ImagePickerConfig,
-    orientation: Int
+    orientation: Int,
+    private val setImagePickerTitle: (Boolean) -> Unit
 ) {
 
     private val context: Context get() = recyclerView.context
@@ -137,15 +137,16 @@ class RecyclerViewManager(
             if (useDefaultTitle) {
                 return ConfigUtils.getImageTitle(context, config)
             }
-            return if (config.limit == IpCons.MAX_LIMIT) {
-                String.format(context.getString(R.string.ef_selected), imageSize)
-            } else {
-                String.format(
-                    context.getString(R.string.ef_selected_with_limit),
-                    imageSize,
-                    config.limit
-                )
-            }
+            return String.format(context.getString(R.string.ef_selected), imageSize)
+//            return if (config.limit == IpCons.MAX_LIMIT) {
+//                String.format(context.getString(R.string.ef_selected), imageSize)
+//            } else {
+//                String.format(
+//                    context.getString(R.string.ef_selected_with_limit),
+//                    imageSize,
+//                    config.limit
+//                )
+//            }
         }
 
     fun setImageAdapter(images: List<Image> = emptyList()) {
@@ -153,7 +154,7 @@ class RecyclerViewManager(
         setItemDecoration(imageColumns)
         recyclerView.adapter = imageAdapter
         isImagePickerDisplaying=true
-
+        setImagePickerTitle(true)
     }
 
     fun selectAllImages(){

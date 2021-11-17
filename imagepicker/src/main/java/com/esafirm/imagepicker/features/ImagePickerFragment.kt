@@ -31,7 +31,7 @@ import com.esafirm.imagepicker.helper.IpLogger
 import com.esafirm.imagepicker.helper.state.fetch
 import com.esafirm.imagepicker.model.Folder
 import com.esafirm.imagepicker.model.Image
-import java.util.ArrayList
+import java.util.*
 
 class ImagePickerFragment : Fragment() {
 
@@ -174,7 +174,7 @@ class ImagePickerFragment : Fragment() {
         recyclerView,
         config,
         resources.configuration.orientation
-    ).apply {
+    ) { Boolean -> updateTitle() }.apply {
         val selectListener = { isSelected: Boolean -> selectImage(isSelected) }
         val folderClick = { bucket: Folder -> setImageAdapter(bucket.images) }
 
@@ -218,7 +218,7 @@ class ImagePickerFragment : Fragment() {
         updateTitle()
     }
 
-    private fun updateTitle() {
+    fun updateTitle() {
         interactionListener.setTitle(recyclerViewManager.title)
     }
 

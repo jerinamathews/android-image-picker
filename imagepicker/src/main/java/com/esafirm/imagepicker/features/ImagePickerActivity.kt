@@ -143,12 +143,12 @@ class ImagePickerActivity : AppCompatActivity(), ImagePickerInteractionListener 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_CANCELED) {
-            cameraModule.removeImage(this)
-            setResult(RESULT_CANCELED)
-            finish()
-            return
-        }
+//        if (resultCode == Activity.RESULT_CANCELED) {
+//            cameraModule.removeImage(this)
+//            setResult(RESULT_CANCELED)
+//            finish()
+//            return
+//        }
         if (requestCode == RC_CAMERA && resultCode == Activity.RESULT_OK) {
             cameraModule.getImage(this, data) { images ->
                 val result = ImagePickerUtils.createResultIntent(images)

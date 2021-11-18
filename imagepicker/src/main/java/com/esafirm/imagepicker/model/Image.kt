@@ -13,24 +13,32 @@ class Image(
     val id: Long,
     val name: String,
     val path: String,
+    val uriValue: Uri
 ) : Parcelable {
+
+    public constructor(id: Long, name: String, path: String) : this(id, name, path, Uri.EMPTY)
 
     @IgnoredOnParcel
     private var uriHolder: Uri? = null
 
     val uri: Uri
         get() {
-            return uriHolder ?: let {
-                val contentUri = if (ImagePickerUtils.isVideoFormat(this)) {
-                    MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-                } else {
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                }
+            if(uriValue != Uri.EMPTY && uriValue.toString().length > 0){
+                return uriValue
+            }else{
+                return uriHolder ?: let {
+                    val contentUri = if (ImagePickerUtils.isVideoFormat(this)) {
+                        MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+                    } else {
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                    }
 
-                ContentUris.withAppendedId(contentUri, id).also {
-                    uriHolder = it
+                    ContentUris.withAppendedId(contentUri, id).also {
+                        uriHolder = it
+                    }
                 }
             }
+
         }
 
     override fun equals(other: Any?): Boolean {

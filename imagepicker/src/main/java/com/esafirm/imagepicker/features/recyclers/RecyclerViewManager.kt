@@ -208,7 +208,9 @@ class RecyclerViewManager(
 
 
     val isShowDoneButton: Boolean
-        get() = true
+        get() = (!isDisplayingFolderView
+                && (imageAdapter.selectedImages.isNotEmpty() || config.showDoneButtonAlways)
+                && config.returnMode !== ReturnMode.ALL && config.returnMode !== ReturnMode.GALLERY_ONLY)
 
     val isShowSelectAllButton: Boolean
         get() = isImagePickerDisplaying

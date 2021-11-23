@@ -123,8 +123,6 @@ class ImagePickerActivity : AppCompatActivity(), ImagePickerInteractionListener 
         if (!imagePickerFragment.handleBack()) {
             super.onBackPressed()
         }
-        if(!imagePickerFragment.isShowSelectAll)
-        imagePickerFragment.onDone()
     }
 
     private fun setupView(config: ImagePickerConfig) {

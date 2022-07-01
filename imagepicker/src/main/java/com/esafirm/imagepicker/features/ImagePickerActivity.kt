@@ -120,7 +120,11 @@ class ImagePickerActivity : AppCompatActivity(), ImagePickerInteractionListener 
     }
 
     override fun onBackPressed() {
-        if (!imagePickerFragment.handleBack()) {
+        if (this::imagePickerFragment.isInitialized) {
+            if (!imagePickerFragment.handleBack()) {
+                super.onBackPressed()
+            }
+        }else {
             super.onBackPressed()
         }
     }

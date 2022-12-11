@@ -7,6 +7,8 @@ import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -16,10 +18,6 @@ import com.esafirm.imagepicker.helper.*
 import com.esafirm.imagepicker.model.Image
 
 class ImagePickerActivity : AppCompatActivity(), ImagePickerInteractionListener {
-
-    companion object {
-        private const val RC_CAMERA = 1011
-    }
 
     private val cameraModule = ImagePickerComponentsHolder.cameraModule
 
@@ -35,6 +33,24 @@ class ImagePickerActivity : AppCompatActivity(), ImagePickerInteractionListener 
     }
 
     private val isCameraOnly by lazy { cameraOnlyConfig != null }
+
+    private val startForCameraResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result: ActivityResult ->
+        val resultCode = result.resultCode
+        if (resultCode == Activity.RESULT_CANCELED) {
+            cameraModule.removeImage(this)
+            setResult(RESULT_CANCELED)
+            finish()
+            return@registerForActivityResult
+        }
+        if (resultCode == Activity.RESULT_OK) {
+            cameraModule.getImage(this, result.data) { images ->
+                val resultIntent = ImagePickerUtils.createResultIntent(images)
+                finishPickImages(resultIntent)
+            }
+        }
+    }
 
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(LocaleManager.updateResources(newBase))
@@ -52,7 +68,7 @@ class ImagePickerActivity : AppCompatActivity(), ImagePickerInteractionListener 
 
         if (isCameraOnly) {
             val cameraIntent = cameraModule.getCameraIntent(this, cameraOnlyConfig!!)
-            startActivityForResult(cameraIntent, RC_CAMERA)
+            startForCameraResult.launch(cameraIntent)
             return
         }
 
@@ -124,7 +140,7 @@ class ImagePickerActivity : AppCompatActivity(), ImagePickerInteractionListener 
             if (!imagePickerFragment.handleBack()) {
                 super.onBackPressed()
             }
-        }else {
+        } else {
             super.onBackPressed()
         }
     }
@@ -142,22 +158,6 @@ class ImagePickerActivity : AppCompatActivity(), ImagePickerInteractionListener 
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(arrowDrawable)
             setDisplayShowTitleEnabled(true)
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_CANCELED) {
-            cameraModule.removeImage(this)
-            setResult(RESULT_CANCELED)
-            finish()
-            return
-        }
-        if (requestCode == RC_CAMERA && resultCode == Activity.RESULT_OK) {
-            cameraModule.getImage(this, data) { images ->
-                val result = ImagePickerUtils.createResultIntent(images)
-                finishPickImages(result)
-            }
         }
     }
 

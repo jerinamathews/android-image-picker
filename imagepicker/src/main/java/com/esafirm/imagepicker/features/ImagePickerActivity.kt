@@ -3,18 +3,24 @@ package com.esafirm.imagepicker.features
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.BlendModeColorFilterCompat
+import androidx.core.graphics.BlendModeCompat
 import com.esafirm.imagepicker.R
 import com.esafirm.imagepicker.features.cameraonly.CameraOnlyConfig
-import com.esafirm.imagepicker.helper.*
+import com.esafirm.imagepicker.helper.ConfigUtils
+import com.esafirm.imagepicker.helper.ImagePickerUtils
+import com.esafirm.imagepicker.helper.IpCrasher
+import com.esafirm.imagepicker.helper.LocaleManager
 import com.esafirm.imagepicker.model.Image
 
 class ImagePickerActivity : AppCompatActivity(), ImagePickerInteractionListener {
@@ -149,11 +155,19 @@ class ImagePickerActivity : AppCompatActivity(), ImagePickerInteractionListener 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         actionBar = supportActionBar
+        val backResourceId: Int = if (resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL) {
+            // For right-to-left layouts, pick the drawable that points to the right (forward).
+            R.drawable.ef_ic_arrow_forward
+        } else {
+            // For left-to-right layouts, pick the drawable that points to the left (back).
+            R.drawable.ef_ic_arrow_back
+        }
+
         actionBar?.run {
-            val arrowDrawable = ViewUtils.getArrowIcon(this@ImagePickerActivity)
+            val arrowDrawable = ContextCompat.getDrawable(applicationContext, backResourceId)
             val arrowColor = config.arrowColor
             if (arrowColor != ImagePickerConfig.NO_COLOR && arrowDrawable != null) {
-                arrowDrawable.setColorFilter(arrowColor, PorterDuff.Mode.SRC_ATOP)
+                arrowDrawable.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(arrowColor, BlendModeCompat.SRC_ATOP)
             }
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(arrowDrawable)

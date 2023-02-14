@@ -167,12 +167,6 @@ class ImagePickerActivity : AppCompatActivity(), ImagePickerInteractionListener 
         }
 
         actionBar?.run {
-//            val arrowDrawable = AppCompatDrawableManager.get().getDrawable(applicationContext, backResourceId);
-////            val arrowDrawable = ContextCompat.getDrawable(applicationContext, backResourceId)
-//            val arrowColor = config.arrowColor
-//            if (arrowColor != ImagePickerConfig.NO_COLOR && arrowDrawable != null) {
-//                arrowDrawable.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(arrowColor, BlendModeCompat.SRC_ATOP)
-//            }
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(backResourceId)
             setDisplayShowTitleEnabled(true)

@@ -1,5 +1,6 @@
 package com.esafirm.imagepicker.features
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -11,6 +12,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatDrawableManager
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.BlendModeColorFilterCompat
@@ -151,6 +153,7 @@ class ImagePickerActivity : AppCompatActivity(), ImagePickerInteractionListener 
         }
     }
 
+    @SuppressLint("RestrictedApi")
     private fun setupView(config: ImagePickerConfig) {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -164,13 +167,14 @@ class ImagePickerActivity : AppCompatActivity(), ImagePickerInteractionListener 
         }
 
         actionBar?.run {
-            val arrowDrawable = ContextCompat.getDrawable(applicationContext, backResourceId)
-            val arrowColor = config.arrowColor
-            if (arrowColor != ImagePickerConfig.NO_COLOR && arrowDrawable != null) {
-                arrowDrawable.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(arrowColor, BlendModeCompat.SRC_ATOP)
-            }
+//            val arrowDrawable = AppCompatDrawableManager.get().getDrawable(applicationContext, backResourceId);
+////            val arrowDrawable = ContextCompat.getDrawable(applicationContext, backResourceId)
+//            val arrowColor = config.arrowColor
+//            if (arrowColor != ImagePickerConfig.NO_COLOR && arrowDrawable != null) {
+//                arrowDrawable.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(arrowColor, BlendModeCompat.SRC_ATOP)
+//            }
             setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(arrowDrawable)
+            setHomeAsUpIndicator(backResourceId)
             setDisplayShowTitleEnabled(true)
         }
     }

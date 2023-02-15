@@ -35,6 +35,7 @@ import com.esafirm.imagepicker.model.Folder
 import com.esafirm.imagepicker.model.Image
 import java.util.*
 
+@Suppress("DEPRECATION")
 class ImagePickerFragment : Fragment() {
 
     private var binding: EfFragmentImagePickerBinding? = null

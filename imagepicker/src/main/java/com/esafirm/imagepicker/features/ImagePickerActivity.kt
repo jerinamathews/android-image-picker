@@ -25,6 +25,7 @@ import com.esafirm.imagepicker.helper.IpCrasher
 import com.esafirm.imagepicker.helper.LocaleManager
 import com.esafirm.imagepicker.model.Image
 
+@Suppress("DEPRECATION")
 class ImagePickerActivity : AppCompatActivity(), ImagePickerInteractionListener {
 
     private val cameraModule = ImagePickerComponentsHolder.cameraModule

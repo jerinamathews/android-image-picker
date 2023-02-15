@@ -27,6 +27,7 @@ import com.esafirm.sample.databinding.ActivityCustomUiBinding
  * This custom UI for ImagePicker puts the picker in the bottom half of the screen, and a preview of
  * the last selected image in the top half.
  */
+@Suppress("DEPRECATION")
 class CustomUIActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCustomUiBinding
